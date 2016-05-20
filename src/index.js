@@ -58,7 +58,7 @@ var LazyLoad = UI.extend({
         var the = this;
 
         the[_options] = options = object.assign(true, {}, defaults, options);
-        the.Super(options);
+        LazyLoad.parent(the, options);
 
         // init node
 
@@ -111,7 +111,7 @@ var LazyLoad = UI.extend({
      * 销毁实例
      */
     destroy: function () {
-        this.Super.destroy();
+        LazyLoad.parent.destroy(the);
     }
 });
 var _options = LazyLoad.sole();
