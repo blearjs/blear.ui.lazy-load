@@ -14,6 +14,7 @@ var Scrollable = require('blear.classes.scrollable');
 var object = require('blear.utils.object');
 var array = require('blear.utils.array');
 var fun = require('blear.utils.function');
+var loader = require('blear.utils.loader');
 var image = require('blear.utils.image');
 var selector = require('blear.core.selector');
 var attribute = require('blear.core.attribute');
@@ -167,6 +168,11 @@ pro[_setOriginal] = function (el) {
     }
 
     var setOriginal = function () {
+        the.emit('beforeLoad', original);
+        loader.img(original, function () {
+            the.emit('afterLoad', original);
+        });
+
         switch (el.tagName) {
             case 'IMG':
                 attribute.attr(el, 'src', original);
