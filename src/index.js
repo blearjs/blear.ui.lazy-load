@@ -9,15 +9,15 @@
 
 'use strict';
 
-var UI =         require('blear.ui');
+var UI = require('blear.ui');
 var Scrollable = require('blear.classes.scrollable');
-var object =     require('blear.utils.object');
-var array =      require('blear.utils.array');
-var fun =        require('blear.utils.function');
-var image =      require('blear.utils.image');
-var selector =   require('blear.core.selector');
-var attribute =  require('blear.core.attribute');
-var layout =     require('blear.core.layout');
+var object = require('blear.utils.object');
+var array = require('blear.utils.array');
+var fun = require('blear.utils.function');
+var image = require('blear.utils.image');
+var selector = require('blear.core.selector');
+var attribute = require('blear.core.attribute');
+var layout = require('blear.core.layout');
 
 
 var win = window;
@@ -26,8 +26,8 @@ var defaults = {
     /**
      * 容器
      */
-    el : document,
-    
+    el: document,
+
     /**
      * 元素选择器
      * @type String|HTMLElement
@@ -73,13 +73,13 @@ var LazyLoad = UI.extend({
         var offset = options.offset;
         var _onScroll = function () {
             var els = the[_cache];
-            //var docScrollLeft = layout.scrollLeft(win);
-            //var docScrollTop = layout.scrollTop(win);
-            //var docScrollRight = docScrollLeft + layout.width(win);
-            //var docScrollBottom = docScrollTop + layout.height(win);
+            var docScrollLeft = layout.scrollLeft(win);
+            var docScrollTop = layout.scrollTop(win);
+            var docScrollRight = docScrollLeft + layout.width(win);
+            var docScrollBottom = docScrollTop + layout.height(win);
             var removeIndexes = [];
             var inViewPortEls = array.filter(els, function (el, index) {
-                return !el[KEY];
+                return !el[KEY] && the[_inViewPort](el, docScrollTop, docScrollRight, docScrollBottom, docScrollLeft);
             });
 
             the[_cache] = array.remove(els, removeIndexes);
@@ -128,7 +128,8 @@ var _setOriginal = LazyLoad.sole();
 var pro = LazyLoad.prototype;
 
 
-pro[_inViewPort] = function (docScrollTop, docScrollRight, docScrollBottom, docScrollLeft) {
+pro[_inViewPort] = function (el, docScrollTop, docScrollRight, docScrollBottom, docScrollLeft) {
+    var offset = this[_options].offset;
     var imgOffsetLeft = layout.offsetLeft(el);
     var imgOffsetTop = layout.offsetTop(el);
     var imgOuterWidth = layout.outerWidth(el);
