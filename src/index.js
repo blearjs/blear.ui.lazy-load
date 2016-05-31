@@ -24,6 +24,11 @@ var win = window;
 var KEY = '__classes/lazy-load/__';
 var defaults = {
     /**
+     * 容器
+     */
+    el : document,
+    
+    /**
      * 元素选择器
      * @type String|HTMLElement
      */
@@ -58,6 +63,7 @@ var LazyLoad = UI.extend({
         var the = this;
 
         the[_options] = options = object.assign(true, {}, defaults, options);
+        the[_root] = selector.query(options.el)[0];
         LazyLoad.parent(the, options);
 
         // init node
@@ -98,7 +104,7 @@ var LazyLoad = UI.extend({
      */
     update: function () {
         var the = this;
-        var list = selector.query(the[_options].itemSelector);
+        var list = selector.query(the[_options].itemSelector, the[_root]);
 
         the[_cache] = array.filter(list, function (imgEl) {
             return !imgEl[KEY];
@@ -115,6 +121,7 @@ var LazyLoad = UI.extend({
     }
 });
 var _options = LazyLoad.sole();
+var _root = LazyLoad.sole();
 var _cache = LazyLoad.sole();
 var _inViewPort = LazyLoad.sole();
 var _setOriginal = LazyLoad.sole();
