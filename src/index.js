@@ -168,6 +168,7 @@ pro[_setOriginal] = function (el) {
     }
 
     var setOriginal = function () {
+        el[KEY] = true;
         the.emit('beforeLoad', original);
         loader.img(original, function () {
             the.emit('afterLoad', original);
