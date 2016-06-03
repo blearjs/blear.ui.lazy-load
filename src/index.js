@@ -71,7 +71,6 @@ var LazyLoad = UI.extend({
 
         // init event
         var scrollable = new Scrollable();
-        var offset = options.offset;
         var _onScroll = function () {
             var els = the[_cache];
             var docScrollLeft = layout.scrollLeft(win);
