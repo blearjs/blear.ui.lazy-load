@@ -117,7 +117,7 @@ var LazyLoad = UI.extend({
      * 销毁实例
      */
     destroy: function () {
-        LazyLoad.parent.destroy(the);
+        LazyLoad.parent.destroy(this);
     }
 });
 var _options = LazyLoad.sole();
