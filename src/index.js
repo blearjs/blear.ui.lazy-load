@@ -168,9 +168,9 @@ pro[_setOriginal] = function (el) {
 
     var setOriginal = function () {
         el[KEY] = true;
-        the.emit('beforeLoad', original);
+        the.emit('beforeLoad', el);
         loader.img(original, function () {
-            the.emit('afterLoad', original);
+            the.emit('afterLoad', el);
         });
 
         switch (el.tagName) {
