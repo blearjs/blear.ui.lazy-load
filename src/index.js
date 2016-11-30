@@ -70,8 +70,8 @@ var LazyLoad = UI.extend({
         // init node
 
         // init event
-        var scrollable = new Scrollable();
-        var _onScroll = function () {
+        var scrollable = the[_scrollable] = new Scrollable();
+        var onScroll = function () {
             var els = the[_cache];
             var docScrollLeft = layout.scrollLeft(win);
             var docScrollTop = layout.scrollTop(win);
@@ -92,9 +92,9 @@ var LazyLoad = UI.extend({
             });
         };
 
-        scrollable.on('scroll', fun.debounce(_onScroll, options.delay));
+        scrollable.on('scroll', fun.debounce(onScroll, options.delay));
         the.update();
-        _onScroll();
+        onScroll();
     },
 
 
@@ -117,7 +117,9 @@ var LazyLoad = UI.extend({
      * 销毁实例
      */
     destroy: function () {
-        LazyLoad.parent.destroy(this);
+        var the = this;
+        LazyLoad.invoke('destroy', the);
+        the[_scrollable].destroy();
     }
 });
 var _options = LazyLoad.sole();
@@ -125,6 +127,7 @@ var _root = LazyLoad.sole();
 var _cache = LazyLoad.sole();
 var _inViewPort = LazyLoad.sole();
 var _setOriginal = LazyLoad.sole();
+var _scrollable = LazyLoad.sole();
 var pro = LazyLoad.prototype;
 
 
