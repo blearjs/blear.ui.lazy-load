@@ -2,9 +2,8 @@
  * ui/LazyLoad
  * @author ydr.me
  * @create 2016-04-25 19:40
+ * @update 2017年03月18日15:36:14
  */
-
-
 
 
 'use strict';
@@ -20,9 +19,7 @@ var selector = require('blear.core.selector');
 var attribute = require('blear.core.attribute');
 var layout = require('blear.core.layout');
 
-
 var win = window;
-var KEY = '__classes/lazy-load/__';
 var defaults = {
     /**
      * 容器
@@ -51,12 +48,7 @@ var defaults = {
      * 判断延迟时间
      * @type Number
      */
-    delay: 30,
-
-    /**
-     * 七牛 webp 转换
-     */
-    qiniuWebp: true
+    delay: 30
 };
 var LazyLoad = UI.extend({
     className: 'LazyLoad',
@@ -122,14 +114,15 @@ var LazyLoad = UI.extend({
         the[_scrollable].destroy();
     }
 });
-var _options = LazyLoad.sole();
-var _root = LazyLoad.sole();
-var _cache = LazyLoad.sole();
-var _inViewPort = LazyLoad.sole();
-var _setOriginal = LazyLoad.sole();
-var _scrollable = LazyLoad.sole();
+var sole = LazyLoad.sole;
+var _options = sole();
+var _root = sole();
+var _cache = sole();
+var _inViewPort = sole();
+var _setOriginal = sole();
+var _scrollable = sole();
+var KEY = sole();
 var pro = LazyLoad.prototype;
-
 
 pro[_inViewPort] = function (el, docScrollTop, docScrollRight, docScrollBottom, docScrollLeft) {
     var offset = this[_options].offset;
@@ -186,14 +179,7 @@ pro[_setOriginal] = function (el) {
         }
     };
 
-    if (options.qiniuWebp) {
-        image.supportWebp(function (bool) {
-            original = bool ? image.qiniuWebp(original) : original;
-            setOriginal();
-        });
-    } else {
-        setOriginal();
-    }
+    setOriginal();
 };
 
 LazyLoad.defaults = defaults;
