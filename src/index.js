@@ -62,16 +62,14 @@ var LazyLoad = UI.extend({
         // init node
 
         // init event
-        var scrollable = the[_scrollable] = new Scrollable();
+        var scrollable = the[_scrollable] = new Scrollable({
+            el: the[_root]
+        });
         var onScroll = function () {
             var els = the[_cache];
-            var docScrollLeft = layout.scrollLeft(win);
-            var docScrollTop = layout.scrollTop(win);
-            var docScrollRight = docScrollLeft + layout.width(win);
-            var docScrollBottom = docScrollTop + layout.height(win);
             var removeIndexes = [];
             var inViewPortEls = array.filter(els, function (el, index) {
-                return !el[KEY] && the[_inViewPort](el, docScrollTop, docScrollRight, docScrollBottom, docScrollLeft);
+                return !el[KEY] && the[_inViewPort](el, layout.width(win), layout.height(win));
             });
 
             the[_cache] = array.remove(els, removeIndexes);
@@ -124,27 +122,23 @@ var _scrollable = sole();
 var KEY = sole();
 var pro = LazyLoad.prototype;
 
-pro[_inViewPort] = function (el, docScrollTop, docScrollRight, docScrollBottom, docScrollLeft) {
+pro[_inViewPort] = function (el, winWidth, winHeight) {
     var offset = this[_options].offset;
-    var imgOffsetLeft = layout.offsetLeft(el);
-    var imgOffsetTop = layout.offsetTop(el);
-    var imgOuterWidth = layout.outerWidth(el);
-    var imgOuterHeight = layout.outerHeight(el);
-    var imgOffsetRight = imgOffsetLeft + imgOuterWidth + offset;
-    var imgOffsetBottom = imgOffsetTop + imgOuterHeight + offset;
-    imgOffsetLeft -= offset;
-    imgOffsetTop -= offset;
+    var imgClientLeft = layout.clientLeft(el);
+    var imgClientTop = layout.clientTop(el);
+    var imgWidth = el.width;
+    var imgHeight = el.height;
 
     return (!// 非
             (
-                // 元素底边窗口顶部之上
-                imgOffsetBottom < docScrollTop ||
-                // 元素上边在窗口底部之下
-                imgOffsetTop > docScrollBottom ||
-                // 元素左边在窗口右边
-                imgOffsetLeft > docScrollRight ||
-                // 元素右边在窗口左边
-                imgOffsetRight < docScrollLeft
+                // 上边之上
+                imgClientTop + imgHeight + offset < 0 ||
+                // 右边之右
+                imgClientLeft - offset > winWidth ||
+                // 下边之下
+                imgClientTop - offset > winHeight ||
+                // 左边之左
+                imgClientLeft + imgWidth + offset < 0
             )
     );
 };
@@ -164,10 +158,6 @@ pro[_setOriginal] = function (el) {
 
     var setOriginal = function () {
         el[KEY] = true;
-        the.emit('beforeLoad', el, original);
-        loader.img(original, function () {
-            the.emit('afterLoad', el, original);
-        });
 
         switch (el.tagName) {
             case 'IMG':
