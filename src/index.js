@@ -160,7 +160,7 @@ pro[_setOriginal] = function (el) {
         el[KEY] = true;
 
         the.emit('beforeLoad', el, original);
-        loader.img(original, function (err, el) {
+        loader.img(original, function (err, _el) {
             the.emit('afterLoad', err, el);
         });
 
