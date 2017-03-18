@@ -1,6 +1,6 @@
 {
   "name": "blear.ui.lazy-load",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "懒加载 UI",
   "scripts": {
     "live": "browser-sync start --config bs-config.js"
@@ -36,6 +36,7 @@
   "dependencies": {
     "blear.ui": "1.x",
     "blear.classes.scrollable": "1.x",
+    "blear.utils.loader": "1.x",
     "blear.utils.object": "1.x",
     "blear.utils.array": "1.x",
     "blear.utils.function": "1.x",

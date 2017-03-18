@@ -159,6 +159,11 @@ pro[_setOriginal] = function (el) {
     var setOriginal = function () {
         el[KEY] = true;
 
+        the.emit('beforeLoad', el, original);
+        loader.img(original, function (err, el) {
+            the.emit('afterLoad', err, el);
+        });
+
         switch (el.tagName) {
             case 'IMG':
                 attribute.attr(el, 'src', original);
